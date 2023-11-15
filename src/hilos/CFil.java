@@ -1,7 +1,8 @@
 package hilos;
 
+import java.util.Scanner;
 
-public class CFil extends Thread {
+class CFil extends Thread {
     private String nombre;
     private int temporizacion;
 
@@ -33,3 +34,4 @@ public class CFil extends Thread {
         }
     }
 }
+

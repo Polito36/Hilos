@@ -43,7 +43,7 @@ public class main {
                 end++;
             }
 
-            threads[i] = new Thread(new Buscador(vector, start, end, targetValue));
+            threads[i] = new Thread(new Buscador(vector, start, end, targetValue, i + 1));
             threads[i].start();
 
             currentIndex = end + 1;

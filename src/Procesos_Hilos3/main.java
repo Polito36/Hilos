@@ -29,6 +29,8 @@ public class main {
         }
 
         Thread[] threads = new Thread[numThreads];
+        boolean encontrado = false;
+
         int positionsPerThread = size / numThreads;
         int remainingPositions = size % numThreads;
         int currentIndex = 0;
@@ -51,7 +53,7 @@ public class main {
         for (int i = currentIndex; i < size; i++) {
             if (vector[i] == targetValue) {
                 System.out.println("Proceso padre encontró el valor " + targetValue + " en la posición " + i);
-                System.exit(0);
+                encontrado = true;
             }
         }
 
@@ -64,7 +66,9 @@ public class main {
             }
         }
 
-        // Si llegamos aquí, nadie encontró el valor
-        System.out.println("Ningún hilo o proceso padre encontró el valor " + targetValue + " en el vector.");
+        // Verificar si se encontró en algún hilo
+        if (encontrado = false) {
+            System.out.println("Ningún hilo o proceso padre encontró el valor " + targetValue + " en el vector.");
+        }
     }
 }

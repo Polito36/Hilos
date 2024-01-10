@@ -1,9 +1,6 @@
 package Procesos_Hilos3;
 
-import java.util.Random;
-import java.util.Scanner;
-
-class Buscador extends Thread {
+class Buscador implements Runnable {
     private int[] vector;
     private int inicio;
     private int fin;
@@ -33,5 +30,3 @@ class Buscador extends Thread {
         return encontrado;
     }
 }
-
-

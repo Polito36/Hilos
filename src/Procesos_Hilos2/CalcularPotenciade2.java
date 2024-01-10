@@ -1,23 +1,18 @@
 package Procesos_Hilos2;
 
 class CalcularPotenciade2 implements Runnable {
-    int exponent;
-    private long result;
+	private int power;
 
-    CalcularPotenciade2(int exponent) {
-        this.exponent = exponent;
-    }
-
-    private long calculatePowerOfTwo(int exp) {
-        return (long) Math.pow(2, exp);
-    }
-
-    public long getResult() {
-        return result;
+    public CalcularPotenciade2(int power) {
+        this.power = power;
     }
 
     @Override
     public void run() {
-        result = calculatePowerOfTwo(exponent);
+        long result = 1;
+        for (int i = 0; i < power; i++) {
+            result *= 2;
+        }
+        System.out.println("2^" + power + " = " + result);
     }
 }

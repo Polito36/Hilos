@@ -55,7 +55,7 @@ public class main {
         for (int i = currentIndex; i < size; i++) {
             if (vector[i] == targetValue) {
                 System.out.println("Proceso padre encontró el valor " + targetValue + " en la posición " + i);
-                cont++;
+                
             }
             
         }
@@ -72,6 +72,9 @@ public class main {
             }
         }
 
+      
+        
+        
         // Verificar si se encontró en algún hilo
         if (encontrado == false) {
             System.out.println("Ningún hilo o proceso padre encontró el valor " + targetValue + " en el vector.");

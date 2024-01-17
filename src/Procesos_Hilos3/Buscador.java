@@ -23,6 +23,7 @@ class Buscador implements Runnable {
             if (vector[i] == objetivo) {
                 System.out.println("¡El Valor " + objetivo +" se ha encontrado en la posición " + i + " por el hilo " + numeroHilo + "!");
                 encontrado = true;
+               main.cont++;
                 return;
             }
         }

@@ -21,7 +21,7 @@ class Buscador implements Runnable {
     public void run() {
         for (int i = inicio; i <= fin; i++) {
             if (vector[i] == objetivo) {
-                System.out.println("¡Valor encontrado en la posición " + i + " por el hilo " + numeroHilo + "!");
+                System.out.println("¡El Valor " + objetivo +" se ha encontrado en la posición " + i + " por el hilo " + numeroHilo + "!");
                 encontrado = true;
                 return;
             }

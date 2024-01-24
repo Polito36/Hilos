@@ -5,13 +5,15 @@ class Buscador implements Runnable {
     private int inicio;
     private int fin;
     private int objetivo;
+    private int numeroHilo;
     private boolean encontrado;
 
-    public Buscador(int[] vector, int inicio, int fin, int objetivo) {
+    public Buscador(int[] vector, int inicio, int fin, int objetivo, int numeroHilo) {
         this.vector = vector;
         this.inicio = inicio;
         this.fin = fin;
         this.objetivo = objetivo;
+        this.numeroHilo = numeroHilo;
         this.encontrado = false;
     }
 
@@ -19,8 +21,9 @@ class Buscador implements Runnable {
     public void run() {
         for (int i = inicio; i <= fin; i++) {
             if (vector[i] == objetivo) {
-                System.out.println("¡Valor encontrado en la posición " + i + " por el hilo " + Thread.currentThread().getId() + "!");
+                System.out.println("¡El Valor " + objetivo +" se ha encontrado en la posición " + i + " por el hilo " + numeroHilo + "!");
                 encontrado = true;
+               main.cont++;
                 return;
             }
         }

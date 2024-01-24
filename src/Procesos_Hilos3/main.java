@@ -4,6 +4,8 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class main {
+	public static boolean encontrado = false;
+	public static int cont = 0;
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
@@ -29,7 +31,7 @@ public class main {
         }
 
         Thread[] threads = new Thread[numThreads];
-        boolean encontrado = false;
+        
 
         int positionsPerThread = size / numThreads;
         int remainingPositions = size % numThreads;
@@ -43,7 +45,7 @@ public class main {
                 end++;
             }
 
-            threads[i] = new Thread(new Buscador(vector, start, end, targetValue));
+            threads[i] = new Thread(new Buscador(vector, start, end, targetValue, i + 1));
             threads[i].start();
 
             currentIndex = end + 1;
@@ -53,8 +55,12 @@ public class main {
         for (int i = currentIndex; i < size; i++) {
             if (vector[i] == targetValue) {
                 System.out.println("Proceso padre encontró el valor " + targetValue + " en la posición " + i);
-                encontrado = true;
+                
             }
+            
+        }
+        if(cont >= 1) {
+        	encontrado = true;
         }
 
         // Esperar a que todos los hilos terminen
@@ -66,8 +72,11 @@ public class main {
             }
         }
 
+      
+        
+        
         // Verificar si se encontró en algún hilo
-        if (encontrado = false) {
+        if (encontrado == false) {
             System.out.println("Ningún hilo o proceso padre encontró el valor " + targetValue + " en el vector.");
         }
     }

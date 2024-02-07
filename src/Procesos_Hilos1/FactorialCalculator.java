@@ -24,7 +24,7 @@ class FactorialCalculator implements Runnable {
         long factorial = 1;
         // Bucle que multiplica los números desde 2 hasta n para calcular el factorial
         for (int i = 2; i <= n; i++) {
-            factorial *= i;
+            factorial = factorial * i;
         }
         return factorial;
     }

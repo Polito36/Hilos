@@ -27,18 +27,16 @@ public class Main {
 
         MatrixOutput output = new MatrixOutput();
         output.displayMatrix(multiplier.getResult());
-        try {
-			output.saveMatrixToFile(multiplier.getResult(), "result.txt");
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+        output.saveMatrixToFile(multiplier.getResult(), "result.txt");
 
-        System.out.println("¿Desea realizar otra multiplicación de matrices? (s/n)");
+        System.out.println("¿Desea realizar otra multiplicación de matrices? (si/no)");
         Scanner scanner = new Scanner(System.in);
         String answer = scanner.nextLine();
-        if (answer.equalsIgnoreCase("s")) {
+        if (answer.equals("si")) {
             main(args);
+        }
+        else if(answer.equals("no")) {
+        	System.out.println("Se ha cerrado el programa");
         }
     }
 }

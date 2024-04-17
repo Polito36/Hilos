@@ -1,7 +1,6 @@
 package PracticaFinal_Pt1;
 
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -9,49 +8,67 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class Servidor {
-	public Socket socket;
-	public ServerSocket serverSocket;
-	public final static int PUERTO = 2640;
-	public DataOutputStream dataOutputStream;
-	public String mensaje;
-	
-	public Servidor() throws IOException {
-		this.serverSocket = new ServerSocket(PUERTO); //Inicializamos el servidor
-		this.socket = new Socket();
-	}
-	
-	
-    public void runServer() throws IOException {
+    public final static int PUERTO = 5249;
+    public final static String PALABRA_CLAVE = "java"; // Palabra clave para cerrar la conexión
 
-        try (ServerSocket serverSocket = new ServerSocket(PUERTO)) {
+    public void runServer() {
+        try (ServerSocket serverSocket = new ServerSocket(PUERTO)) { // Inicializa el servidor en el puerto especificado
             System.out.println("Iniciando servidor...OK");
-            Socket clientSocket = serverSocket.accept();
-            System.out.println("Cliente conectado desde " + clientSocket.getInetAddress() + ":" + clientSocket.getPort());
 
-            try (BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                 PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-                 BufferedReader consoleInput = new BufferedReader(new InputStreamReader(System.in))) {
+            while (true) { // Bucle infinito para aceptar conexiones de clientes
+                try (Socket clientSocket = serverSocket.accept(); // Acepta la conexión entrante del cliente
+                     BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream())); // Para leer datos del cliente
+                     PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true)) { // Para enviar datos al cliente
 
-                String inputLine;
-                while ((inputLine = in.readLine()) != null) {
-                    System.out.println("Cliente: " + inputLine);
-                    if (inputLine.equalsIgnoreCase("FIN")) {
-                        break;
+                    System.out.println("Cliente conectado desde " + clientSocket.getInetAddress() + ":" + clientSocket.getPort()); // Imprime la dirección IP y el puerto del cliente
+                    out.println("¡Bienvenido al servidor de chat! Escribe '" + PALABRA_CLAVE + "' para salir."); // Envía un mensaje de bienvenida al cliente
+                    out.println("Comienza el chat:"); // Indica que comienza el chat
+
+
+                    // Hilo para enviar mensajes desde el servidor al cliente
+                    Thread sendMessageThread = new Thread(() -> {
+                        try {
+                            String serverMessage;
+                            BufferedReader serverInput = new BufferedReader(new InputStreamReader(System.in));
+                            while ((serverMessage = serverInput.readLine()) != null) {
+                                out.println(serverMessage); // Enviar mensaje al cliente
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    });
+                    sendMessageThread.start(); // Inicia el hilo para enviar mensajes al cliente
+
+                    // Leer mensajes del cliente y mostrarlos en la consola del servidor
+                    String inputLine;
+                    while ((inputLine = in.readLine()) != null) {
+                        System.out.println("Cliente: " + inputLine); // Imprime el mensaje recibido del cliente
+                        if (inputLine.equalsIgnoreCase(PALABRA_CLAVE)) {
+                            break; // Cierra la conexión si el cliente envía la palabra clave
+                        }
                     }
+                    // Mensaje de despedida
+                    out.println("¡Hasta luego!");
 
-                    System.out.print("Servidor: ");
-                    String response = consoleInput.readLine();
-                    out.println(response);
-                    if (response.equalsIgnoreCase("FIN")) {
-                        break;
-                    }
+                    // Cierra el socket cuando se detecta la palabra clave
+                    clientSocket.close();
+
+                } catch (IOException e) {
+                    System.err.println("Error al aceptar la conexión del cliente: " + e.getMessage());
+                } 
+
+                // Verifica si se ha detectado la palabra clave en el bucle principal y sale si se detecta
+                if (PALABRA_CLAVE.equalsIgnoreCase(PALABRA_CLAVE)) {
+                    System.exit(0);
                 }
             }
-
-            System.out.println("Cerrando servidor...OK");
         } catch (IOException e) {
             System.err.println("Error en el servidor: " + e.getMessage());
         }
     }
-}
 
+    public static void main(String[] args) {
+        Servidor servidor = new Servidor();
+        servidor.runServer();
+    }
+}

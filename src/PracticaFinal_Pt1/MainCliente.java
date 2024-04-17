@@ -7,7 +7,7 @@ public class MainCliente {
 
     public static void main(String[] args) throws UnknownHostException, IOException {
         Cliente cliente = new Cliente();
-        cliente.runCliente();
+        cliente.runCliente();   
     }
 }
 

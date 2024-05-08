@@ -83,20 +83,25 @@ public class Servidor {
 
         private void cerrarChat() {
             out.println("¡Hasta luego!");
-            System.exit(0);
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            interrupt();
         }
 
         private void cerrarTodosChats() {
             for (ClienteThread cliente : clientes) {
                 if (cliente != this) {
                     cliente.out.println("¡El servidor ha cerrado la conexión!");
-                    cliente.interrupt();
-                    System.exit(0);
+                    cliente.cerrarChat();
                 }
             }
-            clientes.clear();
-            System.exit(0);
+            clientes.remove(this);
+            System.out.println("Cliente " + numeroCliente + " desconectado.");
         }
+
 
         private void enviarMensajeATodos(String mensaje) {
             for (ClienteThread cliente : clientes) {

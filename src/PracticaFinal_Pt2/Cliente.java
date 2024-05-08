@@ -8,7 +8,7 @@ import java.net.Socket;
 
 public class Cliente {
     public static final int PUERTO = 5249;
-    public static final String HOST = "localhost";
+    public static final String HOST = "10.6.13.98";
 
     public void runCliente() {
         try (
@@ -35,10 +35,12 @@ public class Cliente {
             System.out.println("Comienza el chat:");
             while ((inputLine = consoleInput.readLine()) != null) {
                 out.println(inputLine);
-                if (inputLine.equalsIgnoreCase("FIN")) {
-                    break;
+                if (inputLine.equalsIgnoreCase("adios")) {
+                    System.out.println("Cerrando cliente...OK");
                 }
             }
+            socket.close();
+
 
             System.out.println("Enviando FIN al servidor...");
             out.println("FIN");

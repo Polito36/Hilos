@@ -4,9 +4,9 @@ import java.io.IOException;
 
 public class MainServidor {
 
-    public static void main(String[] args) throws IOException {
-        Servidor servidor = new Servidor();
-        System.out.println("Servidor iniciado");
+    public static void main(String[] args) {
+        int maxClientes = Integer.parseInt(args[0]);
+        Servidor servidor = new Servidor(maxClientes);
         servidor.runServer();
     }
 }

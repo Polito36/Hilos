@@ -102,10 +102,5 @@ public class Servidor {
             }
         }
     }
-
-    public static void main(String[] args) {
-        int maxClientes = Integer.parseInt(args[0]);
-        Servidor servidor = new Servidor(maxClientes);
-        servidor.runServer();
-    }
 }
+

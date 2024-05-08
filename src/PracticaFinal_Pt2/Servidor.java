@@ -14,6 +14,7 @@ public class Servidor {
     public final static String PALABRA_CLAVE_SERVIDOR = "java";
     public final static String PALABRA_CLAVE_CLIENTE = "adios";
     private final int maxClientes;
+    private int contadorClientes = 0;
     private List<ClienteThread> clientes = new ArrayList<>();
 
     public Servidor(int maxClientes) {
@@ -27,7 +28,8 @@ public class Servidor {
             while (true) {
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("Cliente conectado desde " + clientSocket.getInetAddress() + ":" + clientSocket.getPort());
-                ClienteThread cliente = new ClienteThread(clientSocket);
+                contadorClientes++;
+                ClienteThread cliente = new ClienteThread(clientSocket, contadorClientes);
                 clientes.add(cliente);
                 cliente.start();
 
@@ -45,9 +47,11 @@ public class Servidor {
         private Socket socket;
         private BufferedReader in;
         private PrintWriter out;
+        private int numeroCliente;
 
-        public ClienteThread(Socket socket) {
+        public ClienteThread(Socket socket, int numeroCliente) {
             this.socket = socket;
+            this.numeroCliente = numeroCliente;
         }
 
         @Override
@@ -59,13 +63,11 @@ public class Servidor {
 
                 String inputLine;
                 while ((inputLine = in.readLine()) != null) {
-                    System.out.println("Cliente: " + inputLine);
+                    System.out.println("Cliente " + numeroCliente + ": " + inputLine);
                     if (inputLine.equalsIgnoreCase(PALABRA_CLAVE_SERVIDOR)) {
                         cerrarTodosChats();
-                        break;
                     } else if (inputLine.equalsIgnoreCase(PALABRA_CLAVE_CLIENTE)) {
                         cerrarChat();
-                        break;
                     } else {
                         enviarMensajeATodos(inputLine);
                     }
@@ -73,7 +75,7 @@ public class Servidor {
 
                 socket.close();
                 clientes.remove(this);
-                System.out.println("Cliente desconectado.");
+                System.out.println("Cliente " + numeroCliente + " desconectado.");
             } catch (IOException e) {
                 System.err.println("Error en la conexión del cliente: " + e.getMessage());
             }
@@ -81,6 +83,7 @@ public class Servidor {
 
         private void cerrarChat() {
             out.println("¡Hasta luego!");
+            System.exit(0);
         }
 
         private void cerrarTodosChats() {
@@ -88,6 +91,7 @@ public class Servidor {
                 if (cliente != this) {
                     cliente.out.println("¡El servidor ha cerrado la conexión!");
                     cliente.interrupt();
+                    System.exit(0);
                 }
             }
             clientes.clear();
@@ -97,10 +101,9 @@ public class Servidor {
         private void enviarMensajeATodos(String mensaje) {
             for (ClienteThread cliente : clientes) {
                 if (cliente != this) {
-                    cliente.out.println(mensaje);
+                    cliente.out.println("Cliente " + numeroCliente + ": " + mensaje);
                 }
             }
         }
+    }   
     }
-}
-

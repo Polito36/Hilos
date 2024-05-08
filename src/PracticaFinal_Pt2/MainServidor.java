@@ -10,7 +10,6 @@ public class MainServidor {
     	Scanner s1 = new Scanner(System.in);
     	System.out.println("Cuantos clientes quieres? ");
     	int clientes = s1.nextInt();
- 
         Servidor servidor = new Servidor(clientes);
         servidor.runServer();
     }

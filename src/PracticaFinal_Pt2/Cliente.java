@@ -40,12 +40,6 @@ public class Cliente {
                 }
             }
             socket.close();
-
-
-            System.out.println("Enviando FIN al servidor...");
-            out.println("FIN");
-
-            System.out.println("Cerrando cliente...OK");
         } catch (IOException e) {
             System.err.println("Error en el cliente: " + e.getMessage());
         }
